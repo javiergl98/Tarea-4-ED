@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package hotel.utilidades;
+package hotel.aplicacion;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,13 +35,14 @@ public class Utilidades {
 
     public static LocalDate leerFecha(String mensaje) {
         Scanner sc = new Scanner(System.in);
+        
         LocalDate fecha = null;
         boolean fechaValida = false;
         while (!fechaValida) {
             try {
                 System.out.print(mensaje + " (formato yyyy-MM-dd): ");
                 String input = sc.nextLine();
-                fecha = convertirFecha(input);
+                fecha = LocalDate.parse(input, DateTimeFormatter.ISO_LOCAL_DATE); 
                 fechaValida = true;
             } catch (DateTimeParseException e) {
                 System.out.println("Fecha inválida. Por favor, introduzca la fecha en formato yyyy-MM-dd.");
@@ -50,9 +51,7 @@ public class Utilidades {
         return fecha;
     }
     
-    public static LocalDate convertirFecha(String fechaTexto) throws DateTimeParseException{
-        return LocalDate.parse(fechaTexto, DateTimeFormatter.ISO_LOCAL_DATE);     
-    }
+  
     
     public static void validarFechas(LocalDate fechaInicio, LocalDate fechaFin) throws Exception {
         LocalDate hoy = LocalDate.now();

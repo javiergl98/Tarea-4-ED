@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package hotel.modelo;
+package hotel.aplicacion;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 /**
  *
- * @author Antonio
+ * @author Javier
  */
 public class Reserva {
     private static int contadorReservas = 0;
-    private int codigoreserva;
+    private int CODIGO_RESERVA;
     private Cliente cliente;
     private LocalDate fechaEntrada;
     private LocalDate fechaSalida;
@@ -31,7 +31,7 @@ public class Reserva {
         if (!fechaSalida.isAfter(fechaEntrada)) {
             throw new Exception("La fecha de salida debe ser posterior a la de entrada.");
         }
-        this.codigoreserva = obtenerCodigoReserva();
+        this.CODIGO_RESERVA = obtenerCodigoReserva();
         this.cliente = cliente;
         this.fechaEntrada = fechaEntrada;
         this.fechaSalida = fechaSalida;
@@ -46,15 +46,25 @@ public class Reserva {
         return contadorReservas;
     }
 
+    /**
+     * Calcula el coste total de una reserva en función de la cantidad de noches, el tipo de habitación, 
+     * y si se ha solicitado una cama supletoria. Además, aplica un descuento del 10% si la estancia es mayor a 7 noches.
+     * 
+     * @return El coste total de la reserva después de aplicar posibles recargos y descuentos.
+     */
     
     public double calcularCosteTotal() {
+    	  // Calcula la cantidad de noches entre las fechas de entrada y salida
         long noches = ChronoUnit.DAYS.between(fechaEntrada, fechaSalida);
         double precioNoche = (tipoHabitacion == TipoHabitacion.DOBLE) ? PRECIODOBLE : PRECIOSUITE;
-        
+        // Determina el precio por noche en función del tipo de habitación
         if (CamaSupletoria) {
             precioNoche += RECARGOCAMASUPLETORIA;
         }
+        // Si se ha solicitado una cama supletoria, se añade un recargo
+        // Calcula el coste total de la reserva
         double total = noches * precioNoche;
+     // Si la estancia es mayor a 7 noches, aplica un descuento del 10%
         if (noches > 7) {
             total *= 0.9; // Aplica un descuento del 10%
         }
@@ -63,7 +73,7 @@ public class Reserva {
 
     
     public String mostrarDetalles() {
-        String detalles = "Código Reserva: " + codigoreserva + "\n" +
+        String detalles = "Código Reserva: " + CODIGO_RESERVA + "\n" +
                           "Cliente: " + cliente.mostrarInformacion() + "\n" +
                           "Fecha de Entrada: " + fechaEntrada + "\n" +
                           "Fecha de Salida: " + fechaSalida + "\n" +
@@ -74,7 +84,7 @@ public class Reserva {
     }
 
     public int getCodigoReserva() {
-        return codigoreserva;
+        return CODIGO_RESERVA;
     }
 
     public Cliente getCliente() {
